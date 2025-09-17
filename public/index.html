@@ -5,15 +5,16 @@
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>PriceCompare — Compare Prices Instantly</title>
 
-  <!-- Tailwind CDN -->
+  <!-- Tailwind CDN (fast prototyping) -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            accent: '#6C8CFF',
-            'accent-2': '#4F46E5'
+            accent: '#6C8CFF',      /* main accent - cool blue */
+            'accent-2': '#7C3AED',  /* purple depth */
+            surface: '#0b0612'      /* darker surface */
           },
           fontFamily: { inter: ['Inter','system-ui','sans-serif'] }
         }
@@ -22,11 +23,11 @@
   </script>
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-
   <style>
+    :root { --glass-bg: rgba(255,255,255,0.03); }
     body { font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
-    .glass { background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02)); backdrop-filter: blur(8px); }
-    /* details/summary */
+    .glass { background: linear-gradient(180deg, var(--glass-bg), rgba(255,255,255,0.02)); backdrop-filter: blur(8px); }
+    /* details/summary tweaks */
     details[open] { box-shadow: 0 12px 40px rgba(0,0,0,0.6); }
     details summary::-webkit-details-marker { display: none; }
     details summary:before {
@@ -44,24 +45,22 @@
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-    /* subtle logo hover */
-    .store-logo { transition: transform .18s ease, opacity .12s ease; }
-    .store-logo:hover { transform: translateY(-4px) scale(1.03); opacity: 1; }
+    /* logo hover */
+    .store-logo { transition: transform .18s ease, opacity .12s ease, filter .18s ease; }
+    .store-logo:hover { transform: translateY(-4px) scale(1.03); opacity: 1; filter: drop-shadow(0 10px 20px rgba(124,58,237,0.18)); }
 
-    /* companies marquee fallback small animation */
-    @keyframes marquee {
-      0% { transform: translateX(0%); }
-      100% { transform: translateX(-50%); }
-    }
-    .animate-marquee { display:flex; min-width:200%; animation: marquee 28s linear infinite; }
-    @media (max-width:640px) {
-      .animate-marquee { animation-duration: 36s; }
-    }
+    /* marquee animation (single-strip) */
+    @keyframes marquee-single { 0% { transform: translateX(0%); } 100% { transform: translateX(-50%); } }
+    .animate-marquee-single { display:flex; gap:6rem; align-items:center; animation: marquee-single 28s linear infinite; }
+    @media (max-width:640px) { .animate-marquee-single { animation-duration: 38s; gap:2.5rem; } }
+
+    /* subtle rounded strip */
+    .stores-bg { background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius: 20px; padding: 18px; box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
   </style>
 </head>
 <body class="min-h-screen bg-gradient-to-b from-[#0b0620] via-[#24003b] to-[#0b0311] text-white">
 
-  <!-- small "available" pill -->
+  <!-- Available pill -->
   <div class="absolute left-6 top-6 z-50">
     <div class="inline-flex items-center gap-2 bg-white/6 rounded-full px-3 py-1 text-sm">
       <span class="w-2 h-2 bg-green-400 rounded-full inline-block"></span>
@@ -69,7 +68,6 @@
     </div>
   </div>
 
-  <!-- header / hero -->
   <header class="relative overflow-hidden">
     <div class="max-w-6xl mx-auto px-6 py-20 text-center">
       <nav class="flex justify-between items-center text-sm text-white/90 mb-6">
@@ -77,6 +75,7 @@
         <div class="space-x-6">Home <span class="text-white/40">•</span> About <span class="text-white/40">•</span> Help</div>
       </nav>
 
+      <!-- small badge above hero -->
       <div class="mx-auto max-w-6xl px-6 mb-4 flex justify-center">
         <div class="inline-flex items-center gap-2 bg-white/6 text-white/90 rounded-full px-4 py-2 text-sm font-medium shadow-sm">
           <span class="text-sm">❤️</span>
@@ -90,9 +89,9 @@
       <p class="text-white/70 max-w-2xl mx-auto mb-8">Find the best deals on electronics, appliances and gadgets with our smart price comparison tool.</p>
 
       <div class="mx-auto max-w-3xl">
-        <div class="flex items-center gap-3 justify-center glass rounded-3xl p-3 shadow-[0_20px_50px_rgba(0,0,0,0.6)]">
-          <input id="q" class="flex-1 bg-transparent px-4 py-3 rounded-lg outline-none placeholder:text-white/60" placeholder="Paste product link or type product name (e.g. SanDisk 1TB)"/>
-          <button id="go" class="px-6 py-3 rounded-lg bg-accent text-white font-semibold shadow-[0_12px_40px_rgba(76,92,255,0.25)] hover:bg-accent-2 transition">Compare Now</button>
+        <div class="flex items-center gap-3 justify-center glass rounded-3xl p-3">
+          <input id="q" class="flex-1 bg-transparent px-4 py-3 rounded-lg outline-none placeholder:text-white/60" placeholder="Paste product link or type product name (e.g. SanDisk 1TB)" />
+          <button id="go" class="px-6 py-3 rounded-lg bg-accent text-white font-semibold shadow-[0_12px_40px_rgba(108,140,255,0.20)] hover:bg-accent-2 transition">Compare Now</button>
         </div>
 
         <div class="mt-4 flex justify-center gap-4">
@@ -102,15 +101,15 @@
       </div>
     </div>
 
-    <!-- floating decorative shapes -->
+    <!-- decorative shapes -->
     <svg class="absolute left-8 top-24 opacity-8 w-20 h-20 pointer-events-none" viewBox="0 0 24 24" fill="none"><path d="M3 12h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
     <svg class="absolute right-16 top-10 opacity-8 w-28 h-28 pointer-events-none" viewBox="0 0 24 24" fill="none"><path d="M12 2v20" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
   </header>
 
-  <!-- results area -->
+  <!-- results placeholder -->
   <main id="results" class="max-w-6xl mx-auto px-6 py-10"></main>
 
-  <!-- How it works -->
+  <!-- HOW IT WORKS -->
   <section id="how" class="max-w-6xl mx-auto px-6 py-12 text-white/90">
     <h2 class="text-3xl font-bold mb-6">How it works</h2>
     <div class="grid md:grid-cols-3 gap-6">
@@ -120,7 +119,7 @@
       </div>
       <div class="p-6 rounded-xl glass">
         <div class="text-2xl font-semibold mb-2">2. Compare prices</div>
-        <div class="text-sm text-white/70">We fetch prices from multiple stores and show the lowest and breakdown.</div>
+        <div class="text-sm text-white/70">We fetch prices from multiple stores and show the lowest and a store-by-store breakdown.</div>
       </div>
       <div class="p-6 rounded-xl glass">
         <div class="text-2xl font-semibold mb-2">3. Save & set alerts</div>
@@ -129,117 +128,60 @@
     </div>
   </section>
 
- <!-- SINGLE STRIP: Supported stores (replace previous store/marquee blocks) -->
-<section id="stores" class="max-w-6xl mx-auto px-6 py-10">
-  <h3 class="text-center text-lg font-semibold text-white/90 mb-6">Compare across top stores</h3>
+  <!-- SINGLE STRIP: Supported stores (one place only) -->
+  <section id="stores" class="max-w-6xl mx-auto px-6 py-10">
+    <h3 class="text-center text-lg font-semibold text-white/90 mb-6">Compare across top stores</h3>
 
-  <!-- single rounded strip (one background) -->
-  <div class="mx-auto max-w-5xl bg-gradient-to-b from-white/6 to-white/3/10 rounded-2xl px-6 py-6 shadow-[0_20px_40px_rgba(0,0,0,0.6)]">
-    <!-- container that holds logos inline -->
-    <div class="flex items-center gap-10 overflow-hidden">
-      <!-- animated row for desktop (auto-scroll) -->
-      <div class="hidden md:flex gap-10 items-center w-full animate-marquee-single">
-        <img src="https://logo.clearbit.com/amazon.in"     alt="Amazon"   class="h-10 object-contain opacity-95" />
-        <img src="https://logo.clearbit.com/flipkart.com"  alt="Flipkart"  class="h-10 object-contain opacity-95" />
-        <img src="https://logo.clearbit.com/meesho.com"    alt="Meesho"    class="h-10 object-contain opacity-95" />
-        <img src="https://logo.clearbit.com/myntra.com"    alt="Myntra"    class="h-10 object-contain opacity-95" />
-        <img src="https://logo.clearbit.com/ajio.com"      alt="Ajio"      class="h-10 object-contain opacity-95" />
-        <img src="https://logo.clearbit.com/snapdeal.com"  alt="Snapdeal"  class="h-10 object-contain opacity-95" />
-        <img src="https://logo.clearbit.com/tatacliq.com"  alt="TataCliq"  class="h-10 object-contain opacity-95" />
-        <img src="https://logo.clearbit.com/nykaa.com"     alt="Nykaa"     class="h-10 object-contain opacity-95" />
-        <img src="https://logo.clearbit.com/firstcry.com"  alt="FirstCry"  class="h-10 object-contain opacity-95" />
+    <div class="mx-auto max-w-5xl stores-bg">
+      <div class="flex items-center gap-8 overflow-hidden">
+        <!-- desktop: auto-scrolling marquee (single strip, seamless) -->
+        <div class="hidden md:flex items-center w-full">
+          <div class="animate-marquee-single">
+            <!-- first group -->
+            <img src="https://logo.clearbit.com/amazon.in"     alt="Amazon India" class="h-12 store-logo object-contain opacity-95" />
+            <img src="https://logo.clearbit.com/flipkart.com"  alt="Flipkart" class="h-12 store-logo object-contain opacity-95" />
+            <img src="https://logo.clearbit.com/meesho.com"    alt="Meesho" class="h-12 store-logo object-contain opacity-95" />
+            <img src="https://logo.clearbit.com/myntra.com"    alt="Myntra" class="h-12 store-logo object-contain opacity-95" />
+            <img src="https://logo.clearbit.com/ajio.com"      alt="Ajio" class="h-12 store-logo object-contain opacity-95" />
+            <img src="https://logo.clearbit.com/snapdeal.com"  alt="Snapdeal" class="h-12 store-logo object-contain opacity-95" />
+            <img src="https://logo.clearbit.com/tatacliq.com"  alt="TataCliq" class="h-12 store-logo object-contain opacity-95" />
+            <img src="https://logo.clearbit.com/nykaa.com"     alt="Nykaa" class="h-12 store-logo object-contain opacity-95" />
+            <img src="https://logo.clearbit.com/firstcry.com"  alt="FirstCry" class="h-12 store-logo object-contain opacity-95" />
+            <!-- fallback local files (upload these to /public/logos/) -->
+            <img src="/logos/blinkit.png" alt="Blinkit" class="h-12 store-logo object-contain opacity-95" />
+            <img src="/logos/zepto.png"   alt="Zepto"   class="h-12 store-logo object-contain opacity-95" />
 
-        <!-- fallbacks (upload these to /public/logos/ if Clearbit doesn't return them) -->
-        <img src="/logos/blinkit.png" alt="Blinkit" class="h-10 object-contain opacity-95" />
-        <img src="/logos/zepto.png"   alt="Zepto"   class="h-10 object-contain opacity-95" />
-
-        <!-- duplicate set for continuous animation (keeps it seamless) -->
-        <img src="https://logo.clearbit.com/amazon.in"     alt="Amazon"   class="h-10 object-contain opacity-95" />
-        <img src="https://logo.clearbit.com/flipkart.com"  alt="Flipkart"  class="h-10 object-contain opacity-95" />
-        <img src="https://logo.clearbit.com/meesho.com"    alt="Meesho"    class="h-10 object-contain opacity-95" />
-        <img src="https://logo.clearbit.com/myntra.com"    alt="Myntra"    class="h-10 object-contain opacity-95" />
-        <img src="https://logo.clearbit.com/ajio.com"      alt="Ajio"      class="h-10 object-contain opacity-95" />
-        <img src="https://logo.clearbit.com/snapdeal.com"  alt="Snapdeal"  class="h-10 object-contain opacity-95" />
-        <img src="https://logo.clearbit.com/tatacliq.com"  alt="TataCliq"  class="h-10 object-contain opacity-95" />
-        <img src="https://logo.clearbit.com/nykaa.com"     alt="Nykaa"     class="h-10 object-contain opacity-95" />
-        <img src="https://logo.clearbit.com/firstcry.com"  alt="FirstCry"  class="h-10 object-contain opacity-95" />
-        <img src="/logos/blinkit.png" alt="Blinkit" class="h-10 object-contain opacity-95" />
-        <img src="/logos/zepto.png"   alt="Zepto"   class="h-10 object-contain opacity-95" />
-      </div>
-
-      <!-- mobile: touch-scroll row (no auto animation) -->
-      <div class="md:hidden overflow-x-auto no-scrollbar flex gap-8 items-center px-2">
-        <img src="https://logo.clearbit.com/amazon.in"     alt="Amazon"   class="h-10 object-contain opacity-95" />
-        <img src="https://logo.clearbit.com/flipkart.com"  alt="Flipkart"  class="h-10 object-contain opacity-95" />
-        <img src="https://logo.clearbit.com/meesho.com"    alt="Meesho"    class="h-10 object-contain opacity-95" />
-        <img src="https://logo.clearbit.com/myntra.com"    alt="Myntra"    class="h-10 object-contain opacity-95" />
-        <img src="https://logo.clearbit.com/ajio.com"      alt="Ajio"      class="h-10 object-contain opacity-95" />
-        <img src="https://logo.clearbit.com/snapdeal.com"  alt="Snapdeal"  class="h-10 object-contain opacity-95" />
-        <img src="https://logo.clearbit.com/tatacliq.com"  alt="TataCliq"  class="h-10 object-contain opacity-95" />
-        <img src="https://logo.clearbit.com/nykaa.com"     alt="Nykaa"     class="h-10 object-contain opacity-95" />
-        <img src="https://logo.clearbit.com/firstcry.com"  alt="FirstCry"  class="h-10 object-contain opacity-95" />
-        <img src="/logos/blinkit.png" alt="Blinkit" class="h-10 object-contain opacity-95" />
-        <img src="/logos/zepto.png"   alt="Zepto"   class="h-10 object-contain opacity-95" />
-      </div>
-    </div>
-  </div>
-</section>
-
-<style>
-/* marquee animation (single-strip) */
-@keyframes marquee-single {
-  0% { transform: translateX(0%); }
-  100% { transform: translateX(-50%); }
-}
-.animate-marquee-single {
-  display:flex;
-  gap:10rem;
-  align-items:center;
-  animation: marquee-single 28s linear infinite;
-}
-/* hide scrollbar helper already present earlier */
-.no-scrollbar::-webkit-scrollbar { display: none; }
-.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-</style>
-
-      <!-- Mobile row: horizontal scroll -->
-      <div class="md:hidden overflow-x-auto no-scrollbar py-2">
-        <div class="flex gap-6 items-center px-2">
-          <img src="https://logo.clearbit.com/amazon.in" alt="Amazon India" class="h-10 object-contain store-logo" />
-          <img src="https://logo.clearbit.com/flipkart.com" alt="Flipkart" class="h-10 object-contain store-logo" />
-          <img src="https://logo.clearbit.com/meesho.com" alt="Meesho" class="h-10 object-contain store-logo" />
-          <img src="https://logo.clearbit.com/snapdeal.com" alt="Snapdeal" class="h-10 object-contain store-logo" />
-          <img src="https://logo.clearbit.com/firstcry.com" alt="FirstCry" class="h-10 object-contain store-logo" />
-          <img src="https://logo.clearbit.com/blinkit.com" alt="Blinkit" class="h-10 object-contain store-logo" />
-          <img src="https://logo.clearbit.com/zepto.co" alt="Zepto" class="h-10 object-contain store-logo" />
-          <img src="https://logo.clearbit.com/tatacliq.com" alt="TataCliq" class="h-10 object-contain store-logo" />
+            <!-- duplicated group for seamless loop -->
+            <img src="https://logo.clearbit.com/amazon.in"     alt="Amazon India" class="h-12 store-logo object-contain opacity-95" />
+            <img src="https://logo.clearbit.com/flipkart.com"  alt="Flipkart" class="h-12 store-logo object-contain opacity-95" />
+            <img src="https://logo.clearbit.com/meesho.com"    alt="Meesho" class="h-12 store-logo object-contain opacity-95" />
+            <img src="https://logo.clearbit.com/myntra.com"    alt="Myntra" class="h-12 store-logo object-contain opacity-95" />
+            <img src="https://logo.clearbit.com/ajio.com"      alt="Ajio" class="h-12 store-logo object-contain opacity-95" />
+            <img src="https://logo.clearbit.com/snapdeal.com"  alt="Snapdeal" class="h-12 store-logo object-contain opacity-95" />
+            <img src="https://logo.clearbit.com/tatacliq.com"  alt="TataCliq" class="h-12 store-logo object-contain opacity-95" />
+            <img src="https://logo.clearbit.com/nykaa.com"     alt="Nykaa" class="h-12 store-logo object-contain opacity-95" />
+            <img src="https://logo.clearbit.com/firstcry.com"  alt="FirstCry" class="h-12 store-logo object-contain opacity-95" />
+            <img src="/logos/blinkit.png" alt="Blinkit" class="h-12 store-logo object-contain opacity-95" />
+            <img src="/logos/zepto.png"   alt="Zepto"   class="h-12 store-logo object-contain opacity-95" />
+          </div>
         </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- Companies marquee (optional larger row) - duplicates for infinite feeling -->
-  <section class="max-w-6xl mx-auto px-6 py-6">
-    <div class="relative overflow-hidden rounded-xl">
-      <div class="animate-marquee">
-        <img src="https://logo.clearbit.com/amazon.in" alt="Amazon" class="h-10 mx-8 opacity-90" />
-        <img src="https://logo.clearbit.com/flipkart.com" alt="Flipkart" class="h-10 mx-8 opacity-90" />
-        <img src="https://logo.clearbit.com/meesho.com" alt="Meesho" class="h-10 mx-8 opacity-90" />
-        <img src="https://logo.clearbit.com/snapdeal.com" alt="Snapdeal" class="h-10 mx-8 opacity-90" />
-        <img src="https://logo.clearbit.com/firstcry.com" alt="FirstCry" class="h-10 mx-8 opacity-90" />
-        <img src="https://logo.clearbit.com/blinkit.com" alt="Blinkit" class="h-10 mx-8 opacity-90" />
-        <img src="https://logo.clearbit.com/zepto.co" alt="Zepto" class="h-10 mx-8 opacity-90" />
-        <img src="https://logo.clearbit.com/tatacliq.com" alt="TataCliq" class="h-10 mx-8 opacity-90" />
-
-        <!-- duplicate set for continuous effect -->
-        <img src="https://logo.clearbit.com/amazon.in" alt="Amazon" class="h-10 mx-8 opacity-90" />
-        <img src="https://logo.clearbit.com/flipkart.com" alt="Flipkart" class="h-10 mx-8 opacity-90" />
-        <img src="https://logo.clearbit.com/meesho.com" alt="Meesho" class="h-10 mx-8 opacity-90" />
-        <img src="https://logo.clearbit.com/snapdeal.com" alt="Snapdeal" class="h-10 mx-8 opacity-90" />
-        <img src="https://logo.clearbit.com/firstcry.com" alt="FirstCry" class="h-10 mx-8 opacity-90" />
-        <img src="https://logo.clearbit.com/blinkit.com" alt="Blinkit" class="h-10 mx-8 opacity-90" />
-        <img src="https://logo.clearbit.com/zepto.co" alt="Zepto" class="h-10 mx-8 opacity-90" />
-        <img src="https://logo.clearbit.com/tatacliq.com" alt="TataCliq" class="h-10 mx-8 opacity-90" />
+        <!-- mobile: touch-scroll row -->
+        <div class="md:hidden overflow-x-auto no-scrollbar px-2">
+          <div class="flex gap-6 items-center">
+            <img src="https://logo.clearbit.com/amazon.in"     alt="Amazon India" class="h-10 store-logo object-contain" />
+            <img src="https://logo.clearbit.com/flipkart.com"  alt="Flipkart" class="h-10 store-logo object-contain" />
+            <img src="https://logo.clearbit.com/meesho.com"    alt="Meesho" class="h-10 store-logo object-contain" />
+            <img src="https://logo.clearbit.com/myntra.com"    alt="Myntra" class="h-10 store-logo object-contain" />
+            <img src="https://logo.clearbit.com/ajio.com"      alt="Ajio" class="h-10 store-logo object-contain" />
+            <img src="https://logo.clearbit.com/snapdeal.com"  alt="Snapdeal" class="h-10 store-logo object-contain" />
+            <img src="https://logo.clearbit.com/tatacliq.com"  alt="TataCliq" class="h-10 store-logo object-contain" />
+            <img src="https://logo.clearbit.com/nykaa.com"     alt="Nykaa" class="h-10 store-logo object-contain" />
+            <img src="https://logo.clearbit.com/firstcry.com"  alt="FirstCry" class="h-10 store-logo object-contain" />
+            <img src="/logos/blinkit.png" alt="Blinkit" class="h-10 store-logo object-contain" />
+            <img src="/logos/zepto.png"   alt="Zepto"   class="h-10 store-logo object-contain" />
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -250,36 +192,39 @@
     <div class="space-y-4">
       <details class="bg-white/5 p-4 rounded-lg">
         <summary class="cursor-pointer font-semibold">Which stores do you compare?</summary>
-        <div class="mt-2 text-sm text-white/70">Currently Amazon India, Flipkart, Meesho, Snapdeal, FirstCry, Blinkit, Zepto, TataCliq. More soon!</div>
+        <div class="mt-2 text-sm text-white/70">We compare Amazon India, Flipkart, Meesho, Myntra, Ajio, Snapdeal, TataCliq, Nykaa, FirstCry, blinkit and Zepto.</div>
       </details>
+
       <details class="bg-white/5 p-4 rounded-lg">
         <summary class="cursor-pointer font-semibold">How accurate are the prices?</summary>
-        <div class="mt-2 text-sm text-white/70">We fetch listed prices from partner sites. Prices can vary during big sales.</div>
+        <div class="mt-2 text-sm text-white/70">We fetch listed prices from partner sites and apply caching. Prices may vary during sales.</div>
       </details>
+
       <details class="bg-white/5 p-4 rounded-lg">
         <summary class="cursor-pointer font-semibold">How do price alerts work?</summary>
-        <div class="mt-2 text-sm text-white/70">You set a threshold; we check prices periodically and notify when it hits your target.</div>
+        <div class="mt-2 text-sm text-white/70">Set a threshold and we check prices periodically; we'll notify you when the price drops (requires signup/email service).</div>
       </details>
     </div>
   </section>
 
-  <!-- sticky CTA -->
+  <!-- sticky mini CTA -->
   <div class="fixed left-1/2 transform -translate-x-1/2 bottom-6 glass px-5 py-3 rounded-xl flex gap-3 items-center shadow-lg z-40">
     <button id="compare-bottom" class="bg-accent text-white px-4 py-2 rounded-lg font-semibold shadow hover:opacity-95 transition">Compare Now</button>
     <button id="set-alert-bottom" class="px-4 py-2 rounded-lg border border-[rgba(255,255,255,0.12)] hover:bg-white/5 transition">Set Alert</button>
   </div>
 
-  <!-- small JS: pause marquee on hover + auto-scroll to results when injected -->
+  <!-- small JS: pause marquee on hover + auto-scroll hook -->
   <script>
     (function(){
       // pause marquee on hover
-      document.querySelectorAll('.animate-marquee').forEach(track => {
-        const parent = track.parentElement;
-        parent.addEventListener('mouseenter', () => track.style.animationPlayState = 'paused');
-        parent.addEventListener('mouseleave', () => track.style.animationPlayState = 'running');
+      document.querySelectorAll('.animate-marquee-single').forEach(track => {
+        const container = track.closest('.stores-bg');
+        if(!container) return;
+        container.addEventListener('mouseenter', () => track.style.animationPlayState = 'paused');
+        container.addEventListener('mouseleave', () => track.style.animationPlayState = 'running');
       });
 
-      // auto-scroll to results when app.js injects content into #results
+      // auto-scroll to results when #results gets content
       const results = document.getElementById('results');
       if (results) {
         const obs = new MutationObserver(() => {
@@ -292,6 +237,7 @@
     })();
   </script>
 
+  <!-- your application JS -->
   <script src="/app.js"></script>
 </body>
 </html>
