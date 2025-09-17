@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>PriceCompare — Compare Prices Instantly</title>
 
-  <!-- Tailwind Play CDN (fast prototyping) -->
+  <!-- Tailwind Play CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <script>
@@ -15,7 +15,6 @@
           colors: {
             accent: '#6C8CFF',     /* main accent - cool blue */
             'accent-2': '#4F46E5', /* deeper purple-blue for gradients */
-            cream: '#FFF7EE',
           },
           fontFamily: { inter: ['Inter','system-ui','sans-serif'] }
         }
@@ -27,9 +26,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 
   <style>
-    body { font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
+    body { font-family: Inter, system-ui, sans-serif; }
     .glass { background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02)); backdrop-filter: blur(8px); }
-    /* details / summary tweaks */
+    /* FAQ details */
     details[open] { box-shadow: 0 12px 40px rgba(0,0,0,0.6); }
     details summary::-webkit-details-marker { display: none; }
     details summary:before {
@@ -42,10 +41,22 @@
       color: rgba(255,255,255,0.85);
     }
     details[open] summary:before { transform: rotate(45deg); }
+
+    /* Marquee animation */
+    @keyframes marquee {
+      0%   { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
+    }
+    .animate-marquee {
+      display: flex;
+      min-width: 200%;
+      animation: marquee 25s linear infinite;
+    }
   </style>
 </head>
 <body class="min-h-screen bg-gradient-to-b from-[#0b0620] via-[#24003b] to-[#0b0311] text-white">
 
+  <!-- HEADER + HERO -->
   <header class="relative overflow-hidden">
     <div class="max-w-6xl mx-auto px-6 py-20 text-center">
       <nav class="flex justify-between items-center text-sm text-white/90 mb-6">
@@ -53,99 +64,114 @@
         <div class="space-x-6">Home <span class="text-white/40">•</span> About <span class="text-white/40">•</span> Help</div>
       </nav>
 
+      <!-- Small badge -->
+      <div class="mx-auto max-w-6xl px-6 mb-4 flex justify-center">
+        <div class="inline-flex items-center gap-2 bg-white/6 text-white/90 rounded-full px-4 py-2 text-sm font-medium shadow-sm">
+          ❤️ Proudly built by HIT students
+        </div>
+      </div>
+
+      <!-- Hero -->
       <h1 class="font-extrabold text-[clamp(32px,6.6vw,72px)] leading-tight mb-4">
         Compare prices <span class="text-accent">instantly</span><br class="hidden md:inline"> across top stores
       </h1>
       <p class="text-white/70 max-w-2xl mx-auto mb-8">Find the best deals on electronics, appliances and gadgets with our smart price comparison tool.</p>
 
+      <!-- Search box -->
       <div class="mx-auto max-w-3xl">
         <div class="flex items-center gap-3 justify-center glass rounded-3xl p-3 shadow-[0_20px_50px_rgba(0,0,0,0.6)]">
           <input id="q" class="flex-1 bg-transparent px-4 py-3 rounded-lg outline-none placeholder:text-white/60" placeholder="Paste product link or type product name (e.g. SanDisk 1TB)"/>
-          <!-- main hero CTA (updated color + hover + shadow) -->
-          <button id="go" class="px-6 py-3 rounded-lg bg-accent text-white font-semibold shadow-[0_12px_40px_rgba(76,92,255,0.25)] hover:bg-[color:var(--tw-color-accent-600, #4C5CFF)] transition">
-            Compare Now
-          </button>
+          <button id="go" class="px-6 py-3 rounded-lg bg-accent text-white font-semibold shadow-[0_12px_40px_rgba(76,92,255,0.25)] hover:bg-accent-2 transition">Compare Now</button>
         </div>
 
         <div class="mt-4 flex justify-center gap-4">
-          <button id="compare-mini" class="bg-accent text-white px-4 py-2 rounded-lg font-semibold shadow-[0_10px_30px_rgba(76,92,255,0.12)] hover:opacity-95 transition">Compare</button>
-
+          <button id="compare-mini" class="bg-accent text-white px-4 py-2 rounded-lg font-semibold shadow hover:opacity-95 transition">Compare</button>
           <button id="alert-mini" class="border border-[rgba(255,255,255,0.12)] px-4 py-2 rounded-lg text-white/90 hover:bg-white/5 transition">Set Alert</button>
         </div>
       </div>
     </div>
-
-    <!-- subtle floating icons (SVG outlines) -->
-    <svg class="absolute left-8 top-24 opacity-8 w-20 h-20 pointer-events-none" viewBox="0 0 24 24" fill="none"><path d="M3 12h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-    <svg class="absolute right-16 top-10 opacity-8 w-28 h-28 pointer-events-none" viewBox="0 0 24 24" fill="none"><path d="M12 2v20" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
   </header>
 
-  <!-- search results will be rendered here by app.js -->
-  <main id="results" class="max-w-6xl mx-auto px-6 py-10">
-    <!-- When empty, app.js shows "No products found" or results cards -->
-  </main>
+  <!-- RESULTS -->
+  <main id="results" class="max-w-6xl mx-auto px-6 py-10"></main>
 
   <!-- HOW IT WORKS -->
-  <section id="how" class="max-w-6xl mx-auto px-6 py-12 text-white/90">
+  <section class="max-w-6xl mx-auto px-6 py-12 text-white/90">
     <h2 class="text-3xl font-bold mb-6">How it works</h2>
-
     <div class="grid md:grid-cols-3 gap-6">
       <div class="p-6 rounded-xl glass">
         <div class="text-2xl font-semibold mb-2">1. Paste or search</div>
-        <div class="text-sm text-white/70">Paste a product link or type a product name to get started.</div>
+        <p class="text-sm text-white/70">Paste a product link or type a product name to get started.</p>
       </div>
-
       <div class="p-6 rounded-xl glass">
         <div class="text-2xl font-semibold mb-2">2. Compare prices</div>
-        <div class="text-sm text-white/70">We fetch prices from multiple stores and show the lowest and store-by-store breakdown.</div>
+        <p class="text-sm text-white/70">We fetch prices from multiple stores and show the lowest and breakdown.</p>
       </div>
-
       <div class="p-6 rounded-xl glass">
         <div class="text-2xl font-semibold mb-2">3. Save & set alerts</div>
-        <div class="text-sm text-white/70">Save the product to track price history and create alerts for price drops.</div>
+        <p class="text-sm text-white/70">Save the product to track history and get alerts for price drops.</p>
       </div>
     </div>
   </section>
 
   <!-- SUPPORTED STORES -->
-  <section id="stores" class="max-w-6xl mx-auto px-6 py-8">
+  <section class="max-w-6xl mx-auto px-6 py-8">
     <h3 class="text-xl font-semibold text-white/90 mb-4">Compare across</h3>
     <div class="flex flex-wrap gap-4 items-center">
-      <!-- placeholder logo boxes: replace with SVG logos later -->
       <div class="w-32 h-12 flex items-center justify-center bg-white/5 rounded-md">Amazon</div>
       <div class="w-32 h-12 flex items-center justify-center bg-white/5 rounded-md">Flipkart</div>
-      <div class="w-32 h-12 flex items-center justify-center bg-white/5 rounded-md">Croma</div>
-      <div class="w-32 h-12 flex items-center justify-center bg-white/5 rounded-md">TataCliQ</div>
-      <div class="w-32 h-12 flex items-center justify-center bg-white/5 rounded-md">Reliance</div>
+      <div class="w-32 h-12 flex items-center justify-center bg-white/5 rounded-md">Meesho</div>
+      <div class="w-32 h-12 flex items-center justify-center bg-white/5 rounded-md">Snapdeal</div>
+      <div class="w-32 h-12 flex items-center justify-center bg-white/5 rounded-md">FirstCry</div>
+      <div class="w-32 h-12 flex items-center justify-center bg-white/5 rounded-md">Blinkit</div>
+      <div class="w-32 h-12 flex items-center justify-center bg-white/5 rounded-md">Zepto</div>
+      <div class="w-32 h-12 flex items-center justify-center bg-white/5 rounded-md">TataCliq</div>
+    </div>
+  </section>
+
+  <!-- COMPANIES MARQUEE -->
+  <section class="bg-white/5 py-8">
+    <div class="max-w-6xl mx-auto px-6">
+      <h3 class="text-center text-white/80 font-semibold mb-6">
+        Trusted by leading ecommerce stores
+      </h3>
+      <div class="overflow-hidden relative">
+        <div class="flex gap-12 animate-marquee">
+          <img src="/logos/amazon.png" alt="Amazon" class="h-12 object-contain opacity-90" />
+          <img src="/logos/flipkart.png" alt="Flipkart" class="h-12 object-contain opacity-90" />
+          <img src="/logos/meesho.png" alt="Meesho" class="h-12 object-contain opacity-90" />
+          <img src="/logos/snapdeal.png" alt="Snapdeal" class="h-12 object-contain opacity-90" />
+          <img src="/logos/firstcry.png" alt="FirstCry" class="h-12 object-contain opacity-90" />
+          <img src="/logos/blinkit.png" alt="Blinkit" class="h-12 object-contain opacity-90" />
+          <img src="/logos/zepto.png" alt="Zepto" class="h-12 object-contain opacity-90" />
+          <img src="/logos/tatacliq.png" alt="TataCliq" class="h-12 object-contain opacity-90" />
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- FAQ -->
-  <section id="faq" class="max-w-6xl mx-auto px-6 py-10">
+  <section class="max-w-6xl mx-auto px-6 py-10">
     <h3 class="text-2xl font-bold mb-6">Frequently Asked Questions</h3>
-
     <div class="space-y-4">
       <details class="bg-white/5 p-4 rounded-lg">
         <summary class="cursor-pointer font-semibold">Which stores do you compare?</summary>
-        <div class="mt-2 text-sm text-white/70">We currently show prices from Amazon, Flipkart, Croma, TataCliQ and more. We'll keep adding sources — let us know if you want a specific store.</div>
+        <p class="mt-2 text-sm text-white/70">Currently Amazon, Flipkart, Meesho, Snapdeal, FirstCry, Blinkit, Zepto, TataCliq. More soon!</p>
       </details>
-
       <details class="bg-white/5 p-4 rounded-lg">
         <summary class="cursor-pointer font-semibold">How accurate are the prices?</summary>
-        <div class="mt-2 text-sm text-white/70">We fetch listed prices from partner sites and show delivery & coupon info when available. Prices can vary during sales; we store historical prices to provide trends.</div>
+        <p class="mt-2 text-sm text-white/70">We fetch directly from store listings. Prices may vary during sales but we also track history.</p>
       </details>
-
       <details class="bg-white/5 p-4 rounded-lg">
         <summary class="cursor-pointer font-semibold">How do price alerts work?</summary>
-        <div class="mt-2 text-sm text-white/70">Set a price threshold and we'll notify you via email when the product hits that price (requires signup). Alerts are powered by scheduled background checks of product prices.</div>
+        <p class="mt-2 text-sm text-white/70">You set a target price and we notify you when the product drops below it.</p>
       </details>
     </div>
   </section>
 
-  <!-- sticky mini CTA at bottom -->
+  <!-- STICKY BOTTOM CTA -->
   <div class="fixed left-1/2 transform -translate-x-1/2 bottom-6 glass px-5 py-3 rounded-xl flex gap-3 items-center shadow-lg z-40">
-    <button id="compare-bottom" class="bg-accent text-white px-4 py-2 rounded-lg font-semibold shadow-[0_10px_30px_rgba(76,92,255,0.12)] hover:opacity-95 transition">Compare Now</button>
-
+    <button id="compare-bottom" class="bg-accent text-white px-4 py-2 rounded-lg font-semibold shadow hover:opacity-95 transition">Compare Now</button>
     <button id="set-alert-bottom" class="px-4 py-2 rounded-lg border border-[rgba(255,255,255,0.12)] hover:bg-white/5 transition">Set Alert</button>
   </div>
 
