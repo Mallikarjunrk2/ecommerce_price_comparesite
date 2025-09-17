@@ -129,82 +129,77 @@
     </div>
   </section>
 
- <!-- SUPPORTED STORES -->
-<section id="stores" class="max-w-6xl mx-auto px-6 py-12">
-  <h3 class="text-2xl font-bold text-white/90 mb-6 text-center">Compare across top stores</h3>
+ <!-- SINGLE STRIP: Supported stores (replace previous store/marquee blocks) -->
+<section id="stores" class="max-w-6xl mx-auto px-6 py-10">
+  <h3 class="text-center text-lg font-semibold text-white/90 mb-6">Compare across top stores</h3>
 
-  <!-- marquee scroll -->
-  <div class="overflow-hidden relative">
-    <div class="flex gap-8 animate-marquee">
-      <!-- Amazon -->
-      <div class="bg-white/5 rounded-xl p-4 flex items-center justify-center w-40 h-24">
-        <img src="https://logo.clearbit.com/amazon.in" alt="Amazon India" class="h-12 object-contain rounded-lg"/>
+  <!-- single rounded strip (one background) -->
+  <div class="mx-auto max-w-5xl bg-gradient-to-b from-white/6 to-white/3/10 rounded-2xl px-6 py-6 shadow-[0_20px_40px_rgba(0,0,0,0.6)]">
+    <!-- container that holds logos inline -->
+    <div class="flex items-center gap-10 overflow-hidden">
+      <!-- animated row for desktop (auto-scroll) -->
+      <div class="hidden md:flex gap-10 items-center w-full animate-marquee-single">
+        <img src="https://logo.clearbit.com/amazon.in"     alt="Amazon"   class="h-10 object-contain opacity-95" />
+        <img src="https://logo.clearbit.com/flipkart.com"  alt="Flipkart"  class="h-10 object-contain opacity-95" />
+        <img src="https://logo.clearbit.com/meesho.com"    alt="Meesho"    class="h-10 object-contain opacity-95" />
+        <img src="https://logo.clearbit.com/myntra.com"    alt="Myntra"    class="h-10 object-contain opacity-95" />
+        <img src="https://logo.clearbit.com/ajio.com"      alt="Ajio"      class="h-10 object-contain opacity-95" />
+        <img src="https://logo.clearbit.com/snapdeal.com"  alt="Snapdeal"  class="h-10 object-contain opacity-95" />
+        <img src="https://logo.clearbit.com/tatacliq.com"  alt="TataCliq"  class="h-10 object-contain opacity-95" />
+        <img src="https://logo.clearbit.com/nykaa.com"     alt="Nykaa"     class="h-10 object-contain opacity-95" />
+        <img src="https://logo.clearbit.com/firstcry.com"  alt="FirstCry"  class="h-10 object-contain opacity-95" />
+
+        <!-- fallbacks (upload these to /public/logos/ if Clearbit doesn't return them) -->
+        <img src="/logos/blinkit.png" alt="Blinkit" class="h-10 object-contain opacity-95" />
+        <img src="/logos/zepto.png"   alt="Zepto"   class="h-10 object-contain opacity-95" />
+
+        <!-- duplicate set for continuous animation (keeps it seamless) -->
+        <img src="https://logo.clearbit.com/amazon.in"     alt="Amazon"   class="h-10 object-contain opacity-95" />
+        <img src="https://logo.clearbit.com/flipkart.com"  alt="Flipkart"  class="h-10 object-contain opacity-95" />
+        <img src="https://logo.clearbit.com/meesho.com"    alt="Meesho"    class="h-10 object-contain opacity-95" />
+        <img src="https://logo.clearbit.com/myntra.com"    alt="Myntra"    class="h-10 object-contain opacity-95" />
+        <img src="https://logo.clearbit.com/ajio.com"      alt="Ajio"      class="h-10 object-contain opacity-95" />
+        <img src="https://logo.clearbit.com/snapdeal.com"  alt="Snapdeal"  class="h-10 object-contain opacity-95" />
+        <img src="https://logo.clearbit.com/tatacliq.com"  alt="TataCliq"  class="h-10 object-contain opacity-95" />
+        <img src="https://logo.clearbit.com/nykaa.com"     alt="Nykaa"     class="h-10 object-contain opacity-95" />
+        <img src="https://logo.clearbit.com/firstcry.com"  alt="FirstCry"  class="h-10 object-contain opacity-95" />
+        <img src="/logos/blinkit.png" alt="Blinkit" class="h-10 object-contain opacity-95" />
+        <img src="/logos/zepto.png"   alt="Zepto"   class="h-10 object-contain opacity-95" />
       </div>
 
-      <!-- Flipkart -->
-      <div class="bg-white/5 rounded-xl p-4 flex items-center justify-center w-40 h-24">
-        <img src="https://logo.clearbit.com/flipkart.com" alt="Flipkart" class="h-12 object-contain rounded-lg"/>
-      </div>
-
-      <!-- Meesho -->
-      <div class="bg-white/5 rounded-xl p-4 flex items-center justify-center w-40 h-24">
-        <img src="https://logo.clearbit.com/meesho.com" alt="Meesho" class="h-12 object-contain rounded-lg"/>
-      </div>
-
-      <!-- Myntra -->
-      <div class="bg-white/5 rounded-xl p-4 flex items-center justify-center w-40 h-24">
-        <img src="https://logo.clearbit.com/myntra.com" alt="Myntra" class="h-12 object-contain rounded-lg"/>
-      </div>
-
-      <!-- Ajio -->
-      <div class="bg-white/5 rounded-xl p-4 flex items-center justify-center w-40 h-24">
-        <img src="https://logo.clearbit.com/ajio.com" alt="Ajio" class="h-12 object-contain rounded-lg"/>
-      </div>
-
-      <!-- Snapdeal -->
-      <div class="bg-white/5 rounded-xl p-4 flex items-center justify-center w-40 h-24">
-        <img src="https://logo.clearbit.com/snapdeal.com" alt="Snapdeal" class="h-12 object-contain rounded-lg"/>
-      </div>
-
-      <!-- TataCliq -->
-      <div class="bg-white/5 rounded-xl p-4 flex items-center justify-center w-40 h-24">
-        <img src="https://logo.clearbit.com/tatacliq.com" alt="TataCliq" class="h-12 object-contain rounded-lg"/>
-      </div>
-
-      <!-- Nykaa -->
-      <div class="bg-white/5 rounded-xl p-4 flex items-center justify-center w-40 h-24">
-        <img src="https://logo.clearbit.com/nykaa.com" alt="Nykaa" class="h-12 object-contain rounded-lg"/>
-      </div>
-
-      <!-- FirstCry -->
-      <div class="bg-white/5 rounded-xl p-4 flex items-center justify-center w-40 h-24">
-        <img src="https://logo.clearbit.com/firstcry.com" alt="FirstCry" class="h-12 object-contain rounded-lg"/>
-      </div>
-
-      <!-- Blinkit (self-upload later) -->
-      <div class="bg-white/5 rounded-xl p-4 flex items-center justify-center w-40 h-24">
-        <img src="/logos/blinkit.png" alt="Blinkit" class="h-12 object-contain rounded-lg"/>
-      </div>
-
-      <!-- Zepto (self-upload later) -->
-      <div class="bg-white/5 rounded-xl p-4 flex items-center justify-center w-40 h-24">
-        <img src="/logos/zepto.png" alt="Zepto" class="h-12 object-contain rounded-lg"/>
+      <!-- mobile: touch-scroll row (no auto animation) -->
+      <div class="md:hidden overflow-x-auto no-scrollbar flex gap-8 items-center px-2">
+        <img src="https://logo.clearbit.com/amazon.in"     alt="Amazon"   class="h-10 object-contain opacity-95" />
+        <img src="https://logo.clearbit.com/flipkart.com"  alt="Flipkart"  class="h-10 object-contain opacity-95" />
+        <img src="https://logo.clearbit.com/meesho.com"    alt="Meesho"    class="h-10 object-contain opacity-95" />
+        <img src="https://logo.clearbit.com/myntra.com"    alt="Myntra"    class="h-10 object-contain opacity-95" />
+        <img src="https://logo.clearbit.com/ajio.com"      alt="Ajio"      class="h-10 object-contain opacity-95" />
+        <img src="https://logo.clearbit.com/snapdeal.com"  alt="Snapdeal"  class="h-10 object-contain opacity-95" />
+        <img src="https://logo.clearbit.com/tatacliq.com"  alt="TataCliq"  class="h-10 object-contain opacity-95" />
+        <img src="https://logo.clearbit.com/nykaa.com"     alt="Nykaa"     class="h-10 object-contain opacity-95" />
+        <img src="https://logo.clearbit.com/firstcry.com"  alt="FirstCry"  class="h-10 object-contain opacity-95" />
+        <img src="/logos/blinkit.png" alt="Blinkit" class="h-10 object-contain opacity-95" />
+        <img src="/logos/zepto.png"   alt="Zepto"   class="h-10 object-contain opacity-95" />
       </div>
     </div>
   </div>
 </section>
 
-<!-- Tailwind animation -->
 <style>
-  @keyframes marquee {
-    0% { transform: translateX(0%); }
-    100% { transform: translateX(-50%); }
-  }
-  .animate-marquee {
-    animation: marquee 25s linear infinite;
-    display: flex;
-    min-width: max-content;
-  }
+/* marquee animation (single-strip) */
+@keyframes marquee-single {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+.animate-marquee-single {
+  display:flex;
+  gap:10rem;
+  align-items:center;
+  animation: marquee-single 28s linear infinite;
+}
+/* hide scrollbar helper already present earlier */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 </style>
 
       <!-- Mobile row: horizontal scroll -->
