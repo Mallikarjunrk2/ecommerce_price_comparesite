@@ -129,23 +129,83 @@
     </div>
   </section>
 
-  <!-- NEW: Highlighted Supported Stores panel with real logos (Clearbit) -->
-  <section id="stores" class="max-w-6xl mx-auto px-6 py-8">
-    <div class="bg-gradient-to-b from-white/3 to-white/2 rounded-2xl p-8 shadow-[0_20px_50px_rgba(0,0,0,0.6)]">
-      <h3 class="text-center text-lg font-semibold text-white/90 mb-6">Compare across top stores</h3>
+ <!-- SUPPORTED STORES -->
+<section id="stores" class="max-w-6xl mx-auto px-6 py-12">
+  <h3 class="text-2xl font-bold text-white/90 mb-6 text-center">Compare across top stores</h3>
 
-      <!-- Desktop: grid centered. Mobile: scrollable horizontal -->
-      <div class="hidden md:flex items-center justify-center gap-12 flex-wrap">
-        <!-- Clearbit provides logos by domain (works well for prototyping) -->
-        <img src="https://logo.clearbit.com/amazon.in" alt="Amazon India" class="h-12 object-contain store-logo" />
-        <img src="https://logo.clearbit.com/flipkart.com" alt="Flipkart" class="h-12 object-contain store-logo" />
-        <img src="https://logo.clearbit.com/meesho.com" alt="Meesho" class="h-12 object-contain store-logo" />
-        <img src="https://logo.clearbit.com/snapdeal.com" alt="Snapdeal" class="h-12 object-contain store-logo" />
-        <img src="https://logo.clearbit.com/firstcry.com" alt="FirstCry" class="h-12 object-contain store-logo" />
-        <img src="https://logo.clearbit.com/blinkit.com" alt="Blinkit" class="h-12 object-contain store-logo" />
-        <img src="https://logo.clearbit.com/zepto.co" alt="Zepto" class="h-12 object-contain store-logo" />
-        <img src="https://logo.clearbit.com/tatacliq.com" alt="TataCliq" class="h-12 object-contain store-logo" />
+  <!-- marquee scroll -->
+  <div class="overflow-hidden relative">
+    <div class="flex gap-8 animate-marquee">
+      <!-- Amazon -->
+      <div class="bg-white/5 rounded-xl p-4 flex items-center justify-center w-40 h-24">
+        <img src="https://logo.clearbit.com/amazon.in" alt="Amazon India" class="h-12 object-contain rounded-lg"/>
       </div>
+
+      <!-- Flipkart -->
+      <div class="bg-white/5 rounded-xl p-4 flex items-center justify-center w-40 h-24">
+        <img src="https://logo.clearbit.com/flipkart.com" alt="Flipkart" class="h-12 object-contain rounded-lg"/>
+      </div>
+
+      <!-- Meesho -->
+      <div class="bg-white/5 rounded-xl p-4 flex items-center justify-center w-40 h-24">
+        <img src="https://logo.clearbit.com/meesho.com" alt="Meesho" class="h-12 object-contain rounded-lg"/>
+      </div>
+
+      <!-- Myntra -->
+      <div class="bg-white/5 rounded-xl p-4 flex items-center justify-center w-40 h-24">
+        <img src="https://logo.clearbit.com/myntra.com" alt="Myntra" class="h-12 object-contain rounded-lg"/>
+      </div>
+
+      <!-- Ajio -->
+      <div class="bg-white/5 rounded-xl p-4 flex items-center justify-center w-40 h-24">
+        <img src="https://logo.clearbit.com/ajio.com" alt="Ajio" class="h-12 object-contain rounded-lg"/>
+      </div>
+
+      <!-- Snapdeal -->
+      <div class="bg-white/5 rounded-xl p-4 flex items-center justify-center w-40 h-24">
+        <img src="https://logo.clearbit.com/snapdeal.com" alt="Snapdeal" class="h-12 object-contain rounded-lg"/>
+      </div>
+
+      <!-- TataCliq -->
+      <div class="bg-white/5 rounded-xl p-4 flex items-center justify-center w-40 h-24">
+        <img src="https://logo.clearbit.com/tatacliq.com" alt="TataCliq" class="h-12 object-contain rounded-lg"/>
+      </div>
+
+      <!-- Nykaa -->
+      <div class="bg-white/5 rounded-xl p-4 flex items-center justify-center w-40 h-24">
+        <img src="https://logo.clearbit.com/nykaa.com" alt="Nykaa" class="h-12 object-contain rounded-lg"/>
+      </div>
+
+      <!-- FirstCry -->
+      <div class="bg-white/5 rounded-xl p-4 flex items-center justify-center w-40 h-24">
+        <img src="https://logo.clearbit.com/firstcry.com" alt="FirstCry" class="h-12 object-contain rounded-lg"/>
+      </div>
+
+      <!-- Blinkit (self-upload later) -->
+      <div class="bg-white/5 rounded-xl p-4 flex items-center justify-center w-40 h-24">
+        <img src="/logos/blinkit.png" alt="Blinkit" class="h-12 object-contain rounded-lg"/>
+      </div>
+
+      <!-- Zepto (self-upload later) -->
+      <div class="bg-white/5 rounded-xl p-4 flex items-center justify-center w-40 h-24">
+        <img src="/logos/zepto.png" alt="Zepto" class="h-12 object-contain rounded-lg"/>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Tailwind animation -->
+<style>
+  @keyframes marquee {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-50%); }
+  }
+  .animate-marquee {
+    animation: marquee 25s linear infinite;
+    display: flex;
+    min-width: max-content;
+  }
+</style>
 
       <!-- Mobile row: horizontal scroll -->
       <div class="md:hidden overflow-x-auto no-scrollbar py-2">
