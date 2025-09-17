@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>PriceCompare — Compare Prices Instantly</title>
+
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { accent: '#FF8C2A', cream: '#FFF7EE' },
+          fontFamily: { inter: ['Inter', 'system-ui', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+  <style>
+    body { font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
+    .glass { background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02)); backdrop-filter: blur(8px); }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-b from-[#0b0620] via-[#24003b] to-[#0b0311] text-white">
+
+  <header class="relative overflow-hidden">
+    <div class="max-w-6xl mx-auto px-6 py-20 text-center">
+      <nav class="flex justify-between items-center text-sm text-white/90 mb-6">
+        <div class="font-bold text-xl"><span class="text-accent">Price</span>Compare</div>
+        <div class="space-x-6">Home <span class="text-white/40">•</span> About <span class="text-white/40">•</span> Help</div>
+      </nav>
+
+      <h1 class="font-extrabold text-[clamp(32px,6.6vw,72px)] leading-tight mb-4">
+        Compare prices <span class="text-accent">instantly</span><br class="hidden md:inline"> across top stores
+      </h1>
+      <p class="text-white/70 max-w-2xl mx-auto mb-8">Find the best deals on electronics, appliances and gadgets with our smart price comparison tool.</p>
+
+      <div class="mx-auto max-w-3xl">
+        <div class="flex items-center gap-3 justify-center glass rounded-3xl p-3 shadow-[0_20px_50px_rgba(0,0,0,0.6)]">
+          <input id="q" class="flex-1 bg-transparent px-4 py-3 rounded-lg outline-none placeholder:text-white/60" placeholder="Paste product link or type product name (e.g. SanDisk 1TB)"/>
+          <button id="go" class="px-6 py-3 rounded-lg bg-accent font-semibold text-black shadow-md">Compare Now</button>
+        </div>
+
+        <div class="mt-4 flex justify-center gap-4">
+          <button id="compare-mini" class="bg-accent text-black px-4 py-2 rounded-lg font-semibold">Compare</button>
+          <button id="alert-mini" class="border border-white/10 px-4 py-2 rounded-lg">Set Alert</button>
+        </div>
+      </div>
+    </div>
+
+ 
+    <svg class="absolute left-8 top-24 opacity-8 w-20 h-20 pointer-events-none" viewBox="0 0 24 24" fill="none"><path d="M3 12h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    <svg class="absolute right-16 top-10 opacity-8 w-28 h-28 pointer-events-none" viewBox="0 0 24 24" fill="none"><path d="M12 2v20" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+  </header>
+
+  <main id="results" class="max-w-6xl mx-auto px-6 py-10"></main>
+
+  <div class="fixed left-1/2 transform -translate-x-1/2 bottom-6 glass px-5 py-3 rounded-xl flex gap-3 items-center shadow-lg">
+    <button id="compare-bottom" class="bg-accent text-black px-4 py-2 rounded-lg font-semibold">Compare Now</button>
+    <button id="set-alert-bottom" class="px-4 py-2 rounded-lg border border-white/10">Set Alert</button>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
